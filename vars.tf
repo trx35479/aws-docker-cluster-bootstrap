@@ -19,7 +19,7 @@ variable "AMIS" {
 }
 
 variable "SECURITY_GROUPS" {
-  default = ["sg-026a171bf561f41b1", "sg-0547e253e11bdd32c", "sg-09d3adbf3fba39b5f", "sg-09df7929cd34a953d", "sg-0b9e906fadf75fa24", "sg-0c4a48a7537b56d91"]
+  default = ["sg-026a171bf561f41b1", "sg-0547e253e11bdd32c", "sg-0b9e906fadf75fa24"]
 }
 
 variable "SUBNET_ID" {

@@ -18,3 +18,14 @@ sudo systemctl start docker
 sudo docker swarm init
 sudo docker swarm join-token --quiet worker > /home/ubuntu/worker-token
 sudo docker swarm join-token --quiet manager > /home/ubuntu/manager-token
+sleep 30
+
+# install prometheus/grafana
+git clone https://github.com/stefanprodan/swarmprom
+cd /swarmprom
+export ADMIN_USER=admin 
+export ADMIN_PASSWORD=admin 
+export SLACK_URL=https://hooks.slack.com/services/TOKEN 
+export SLACK_CHANNEL=devops-alerts 
+export SLACK_USER=alertmanager 
+docker stack deploy -c docker-compose.yml mon

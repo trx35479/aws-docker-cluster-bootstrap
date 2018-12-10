@@ -25,18 +25,6 @@ resource "aws_instance" "docker-master-standby" {
   vpc_security_group_ids = ["${var.SECURITY_GROUPS}"]
   key_name               = "${aws_key_pair.mykeypair.key_name}"
 
-  connection {
-    host        = "${self.private_ip}"
-    type        = "ssh"
-    user        = "ubuntu"
-    private_key = "${file(var.PATH_TO_PRIVATE_KEY)}"
-  }
-
-  provisioner "file" {
-    source      = "${var.PATH_TO_PRIVATE_KEY}"
-    destination = "/home/ubuntu/mykey.pem"
-  }
-
   user_data = "${data.template_file.master_standby.rendered}"
 
   tags {
