@@ -23,5 +23,27 @@ variable "SECURITY_GROUPS" {
 }
 
 variable "SUBNET_ID" {
-  default = "subnet-00e4e51e48c55b4bc"
+  default = ["subnet-00e4e51e48c55b4bc", "subnet-0cdecde48cde871f5", "subnet-0f5447f85d325c988"]
+}
+
+variable "VPC_SUBNET" {
+  type = "map"
+
+  default {
+    ap-southeast-2c = "subnet-00e4e51e48c55b4bc"
+    ap-southeast-2b = "subnet-0cdecde48cde871f5"
+    ap-southeast-2a = "subnet-0f5447f85d325c988"
+  }
+}
+
+variable "AZ2a" {
+  default = "ap-southeast-2a"
+}
+
+variable "AZ2b" {
+  default = "ap-southeast-2b"
+}
+
+variable "AZ2c" {
+  default = "ap-southeast-2c"
 }
