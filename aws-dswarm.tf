@@ -19,8 +19,9 @@ module "compute" {
   MANAGER_AVAILABILITY_ZONE = "${lookup(var.VPC_SUBNET, var.AZ2a)}"
   STANDBY_AVAILABILITY_ZONE = "${lookup(var.VPC_SUBNET, var.AZ2b)}"
   SECURITY_GROUPS           = "${var.SECURITY_GROUPS}"
-  MANAGER_COUNT             = "${var.MANAGER_COUNT}"
   STANDBY_COUNT             = "${var.STANDBY_COUNT}"
+  MANAGER_USER_DATA         = "${data.template_file.master.rendered}"
+  STANDBY_USER_DATA         = "${data.template_file.master_standby.rendered}"
 }
 
 module "asg" {
@@ -35,6 +36,7 @@ module "asg" {
   MIN_NUMBER_OF_INST = "${var.MIN_NUMBER_OF_INST}"
   MAX_NUMBER_OF_INST = "${var.MAX_NUMBER_OF_INST}"
   LOAD_BALANCERS     = "${module.elb.load_balancer}"
+  WORKER_USER_DATA   = "${data.template_file.worker.rendered}"
 }
 
 module "elb" {
@@ -47,4 +49,12 @@ module "elb" {
   INSTANCE_PROTOCOL = "${var.INSTANCE_PROTOCOL}"
   LB_PORT           = "${var.LB_PORT}"
   LB_PROTOCOL       = "${var.LB_PROTOCOL}"
+}
+
+output "internal_url" {
+  value = "${module.elb.private_dns}"
+}
+
+output "public_url" {
+  value = "${aws_route53_record.www-docker.name}"
 }

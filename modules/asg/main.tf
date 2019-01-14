@@ -4,8 +4,7 @@ resource "aws_launch_configuration" "cluster-config" {
   instance_type   = "${var.WORKER_FLAVOR}"
   key_name        = "${var.AWS_KEYPAIR}"
   security_groups = ["${var.SECURITY_GROUPS}"]
-
-  #  user_data = "${var.USER_DATA}"
+  user_data       = "${var.WORKER_USER_DATA}"
 }
 
 # define the auto-scaling-group for docker workers
@@ -16,11 +15,9 @@ resource "aws_autoscaling_group" "cluster-asg" {
   health_check_grace_period = 300
   health_check_type         = "ELB"
   load_balancers            = ["${var.LOAD_BALANCERS}"]
-
-  #  desired_capacity = 3 # omit this base on the terraform documents if we use a auto_scaling_policy
-  force_delete         = true
-  launch_configuration = "${aws_launch_configuration.cluster-config.name}"
-  vpc_zone_identifier  = ["${var.SUBNET_IDS}"]                             # could be multiple subnet in different availability zone
+  force_delete              = true
+  launch_configuration      = "${aws_launch_configuration.cluster-config.name}"
+  vpc_zone_identifier       = ["${var.SUBNET_IDS}"]                             # could be multiple subnet in different availability zone
 
   tag {
     key                 = "Name"

@@ -4,8 +4,6 @@ variable "IMAGE_ID" {}
 
 variable "MANAGER_FLAVOR" {}
 
-variable "MANAGER_COUNT" {}
-
 variable "STANDBY_COUNT" {}
 
 variable "SECURITY_GROUPS" {
@@ -15,4 +13,9 @@ variable "SECURITY_GROUPS" {
 variable "AWS_KEYPAIR" {}
 
 variable "MANAGER_AVAILABILITY_ZONE" {}
+
 variable "STANDBY_AVAILABILITY_ZONE" {}
+
+variable "MANAGER_USER_DATA" {}
+
+variable "STANDBY_USER_DATA" {}

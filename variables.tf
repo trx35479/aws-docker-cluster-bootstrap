@@ -1,13 +1,13 @@
+variable "AWS_REGION" {
+  default = "ap-southeast-2"
+}
+
 variable "CLUSTER_NAME" {
   default = "dswarm"
 }
 
 variable "PATH_TO_PUBLIC_KEY" {
   default = "~/.ssh/id_rsa.pub"
-}
-
-variable "AWS_REGION" {
-  default = "ap-southeast-2"
 }
 
 variable "WORKER_FLAVOR" {
@@ -19,7 +19,7 @@ variable "MANAGER_FLAVOR" {
 }
 
 variable "LINUX_DISTRO" {
-  default = "coreOS"
+  default = "Ubuntu"
 }
 
 variable "IMAGE_ID" {

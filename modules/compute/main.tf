@@ -1,13 +1,11 @@
 # Define the master and leader of the docker swarm
 resource "aws_instance" "master" {
   ami                    = "${var.IMAGE_ID}"
-  count                  = "${var.MANAGER_COUNT}"
   instance_type          = "${var.MANAGER_FLAVOR}"
   subnet_id              = "${var.MANAGER_AVAILABILITY_ZONE}"
   vpc_security_group_ids = ["${var.SECURITY_GROUPS}"]
   key_name               = "${var.AWS_KEYPAIR}"
-
-  #  user_data = "${data.template_file.master.rendered}"
+  user_data              = "${var.MANAGER_USER_DATA}"
 
   tags {
     Name     = "${var.CLUSTER_NAME}-Instance"
@@ -24,8 +22,7 @@ resource "aws_instance" "master-standby" {
   subnet_id              = "${var.STANDBY_AVAILABILITY_ZONE}"
   vpc_security_group_ids = ["${var.SECURITY_GROUPS}"]
   key_name               = "${var.AWS_KEYPAIR}"
-
-  #  user_data = "${data.template_file.master_standby.rendered}"
+  user_data              = "${var.STANDBY_USER_DATA}"
 
   tags {
     Name     = "${var.CLUSTER_NAME}-Instance"

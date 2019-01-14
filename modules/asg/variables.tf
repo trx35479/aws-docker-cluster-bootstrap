@@ -14,7 +14,7 @@ variable "SECURITY_GROUPS" {
   type = "list"
 }
 
-# variable "USER_DATA" {}
+variable "WORKER_USER_DATA" {}
 
 variable "MIN_NUMBER_OF_INST" {}
 
