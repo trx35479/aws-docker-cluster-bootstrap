@@ -10,6 +10,10 @@ variable "PATH_TO_PUBLIC_KEY" {
   default = "~/.ssh/id_rsa.pub"
 }
 
+variable "PATH_TO_PRIVATE_KEY" {
+  default = "~/.ssh/id_rsa"
+}
+
 variable "WORKER_FLAVOR" {
   default = "t2.micro"
 }
