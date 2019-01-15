@@ -10,7 +10,7 @@ data "template_file" "master_standby" {
 
   vars {
     private_key = "${file(var.PATH_TO_PRIVATE_KEY)}"
-    master_ip = "${module.compute.master_ip}"
+    master_ip   = "${module.compute.master_ip}"
   }
 }
 
@@ -18,7 +18,7 @@ data "template_file" "worker" {
   template = "${file("templates/worker_script.tpl")}"
 
   vars {
-    private_key =  "${file(var.PATH_TO_PRIVATE_KEY)}" 
-    master_ip = "${module.compute.master_ip}"
+    private_key = "${file(var.PATH_TO_PRIVATE_KEY)}"
+    master_ip   = "${module.compute.master_ip}"
   }
 }
