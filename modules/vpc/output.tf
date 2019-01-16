@@ -1,5 +1,9 @@
 # output the subnet's
 
+output "vpc_id" {
+  value = "${aws_vpc.main.id}"
+}
+
 output "main-public-1" {
   value = "${aws_subnet.main-public-1.id}"
 }

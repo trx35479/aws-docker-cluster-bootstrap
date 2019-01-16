@@ -20,4 +20,6 @@ variable "MIN_NUMBER_OF_INST" {}
 
 variable "MAX_NUMBER_OF_INST" {}
 
-variable "LOAD_BALANCERS" {}
+#variable "LOAD_BALANCERS" {}
+
+variable "ALB_ARN" {}

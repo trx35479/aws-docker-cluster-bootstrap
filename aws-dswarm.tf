@@ -49,22 +49,20 @@ module "asg" {
   SECURITY_GROUPS    = ["${module.vpc.external-secg}", "${module.vpc.internal-secg}"]
   MIN_NUMBER_OF_INST = "${var.MIN_NUMBER_OF_INST}"
   MAX_NUMBER_OF_INST = "${var.MAX_NUMBER_OF_INST}"
-  LOAD_BALANCERS     = "${module.elb.load_balancer}"
+  ALB_ARN            = "${module.alb.alb-target}"
   WORKER_USER_DATA   = "${data.template_file.worker.rendered}"
 }
 
-module "elb" {
-  source = "modules/elb"
+module "alb" {
+  source = "modules/alb"
 
-  ELB_NAME          = "${var.CLUSTER_NAME}"
-  SUBNET_IDS        = ["${module.vpc.main-public-1}", "${module.vpc.main-public-2}", "${module.vpc.main-public-3}"]
-  SECURITY_GROUPS   = ["${module.vpc.external-secg}", "${module.vpc.internal-secg}"]
-  INSTANCE_PORT     = "${var.INSTANCE_PORT}"
-  INSTANCE_PROTOCOL = "${var.INSTANCE_PROTOCOL}"
-  LB_PORT           = "${var.LB_PORT}"
-  LB_PROTOCOL       = "${var.LB_PROTOCOL}"
+  ALB_NAME        = "${var.CLUSTER_NAME}"
+  INTERNAL        = "false"
+  SECURITY_GROUPS = ["${module.vpc.external-secg}", "${module.vpc.internal-secg}"]
+  SUBNET_IDS      = ["${module.vpc.main-public-1}", "${module.vpc.main-public-2}", "${module.vpc.main-public-3}"]
+  VPC_ID          = "${module.vpc.vpc_id}"
 }
 
-output "load_balancer_dns" {
-  value = "${module.elb.private_dns}"
+output "alb-target" {
+  value = "${module.alb.alb-target}"
 }

@@ -75,22 +75,6 @@ variable "MAX_NUMBER_OF_INST" {
 #  default = "ap-southeast-2c"
 #}
 
-variable "INSTANCE_PORT" {
-  default = 3000
-}
-
-variable "INSTANCE_PROTOCOL" {
-  default = "http"
-}
-
-variable "LB_PORT" {
-  default = 3000
-}
-
-variable "LB_PROTOCOL" {
-  default = "http"
-}
-
 variable "MANAGER_COUNT" {
   default = 1
 }
