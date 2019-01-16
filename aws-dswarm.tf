@@ -64,3 +64,7 @@ module "elb" {
   LB_PORT           = "${var.LB_PORT}"
   LB_PROTOCOL       = "${var.LB_PROTOCOL}"
 }
+
+output "load_balancer_dns" {
+  value = "${module.elb.private_dns}"
+}

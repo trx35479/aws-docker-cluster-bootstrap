@@ -56,7 +56,7 @@ variable "IMAGE_ID" {
 #}
 
 variable "MIN_NUMBER_OF_INST" {
-  default = 3
+  default = 2
 }
 
 variable "MAX_NUMBER_OF_INST" {
