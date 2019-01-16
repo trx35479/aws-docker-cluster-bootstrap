@@ -10,8 +10,8 @@ resource "aws_launch_configuration" "cluster-config" {
 # define the auto-scaling-group for docker workers
 resource "aws_autoscaling_group" "cluster-asg" {
   name                      = "${var.CLUSTER_NAME}-asg"
-  max_size                  = "${var.MAX_NUMBER_OF_INST}"
-  min_size                  = "${var.MIN_NUMBER_OF_INST}"
+  max_size                  = "${var.MAX_NUMBER_INST}"
+  min_size                  = "${var.MIN_NUMBER_INST}"
   health_check_grace_period = 300
   health_check_type         = "ELB"
 

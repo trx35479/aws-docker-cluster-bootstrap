@@ -12,28 +12,24 @@ resource "aws_key_pair" "mykeypair" {
 module "vpc" {
   source = "modules/vpc"
 
-  AWS_REGION       = "${var.AWS_REGION}"
-  CLUSTER_NAME     = "${var.CLUSTER_NAME}"
-  VPC_CIDR_BLOCK   = "${var.VPC_CIDR_BLOCK}"
-  SUBNET_PUBLIC-1  = "${var.SUBNET_PUBLIC-1}"
-  SUBNET_PUBLIC-2  = "${var.SUBNET_PUBLIC-2}"
-  SUBNET_PUBLIC-3  = "${var.SUBNET_PUBLIC-3}"
-  SUBNET_PRIVATE-1 = "${var.SUBNET_PRIVATE-1}"
-  SUBNET_PRIVATE-2 = "${var.SUBNET_PRIVATE-2}"
-  SUBNET_PRIVATE-3 = "${var.SUBNET_PRIVATE-3}"
+  AWS_REGION     = "${var.AWS_REGION}"
+  CLUSTER_NAME   = "${var.CLUSTER_NAME}"
+  VPC_CIDR_BLOCK = "10.212.0.0/16"
+  PUBLIC_SUBNET  = ["10.212.10.0/24", "10.212.30.0/24", "10.212.50.0/24"]
+  PRIVATE_SUBNET = ["10.212.20.0/24", "10.212.40.0/24", "10.212.60.0/24"]
 }
 
-module "compute" {
-  source = "modules/compute"
+module "ec2" {
+  source = "modules/ec2"
 
   CLUSTER_NAME              = "${var.CLUSTER_NAME}"
   AWS_KEYPAIR               = "${aws_key_pair.mykeypair.key_name}"
   IMAGE_ID                  = "${lookup(var.IMAGE_ID, var.LINUX_DISTRO)}"
-  MANAGER_FLAVOR            = "${var.MANAGER_FLAVOR}"
+  MANAGER_FLAVOR            = "t2.micro"
   MANAGER_AVAILABILITY_ZONE = "${module.vpc.main-public-1}"
   STANDBY_AVAILABILITY_ZONE = "${module.vpc.main-public-2}"
   SECURITY_GROUPS           = ["${module.vpc.external-secg}", "${module.vpc.internal-secg}"]
-  STANDBY_COUNT             = "${var.STANDBY_COUNT}"
+  STANDBY_COUNT             = 2
   MANAGER_USER_DATA         = "${data.template_file.master.rendered}"
   STANDBY_USER_DATA         = "${data.template_file.master_standby.rendered}"
 }
@@ -41,16 +37,16 @@ module "compute" {
 module "asg" {
   source = "modules/asg"
 
-  CLUSTER_NAME       = "${var.CLUSTER_NAME}"
-  AWS_KEYPAIR        = "${aws_key_pair.mykeypair.key_name}"
-  IMAGE_ID           = "${lookup(var.IMAGE_ID, var.LINUX_DISTRO)}"
-  WORKER_FLAVOR      = "${var.WORKER_FLAVOR}"
-  SUBNET_IDS         = ["${module.vpc.main-public-1}", "${module.vpc.main-public-2}", "${module.vpc.main-public-3}"]
-  SECURITY_GROUPS    = ["${module.vpc.external-secg}", "${module.vpc.internal-secg}"]
-  MIN_NUMBER_OF_INST = "${var.MIN_NUMBER_OF_INST}"
-  MAX_NUMBER_OF_INST = "${var.MAX_NUMBER_OF_INST}"
-  ALB_ARN            = "${module.alb.alb-target}"
-  WORKER_USER_DATA   = "${data.template_file.worker.rendered}"
+  CLUSTER_NAME     = "${var.CLUSTER_NAME}"
+  AWS_KEYPAIR      = "${aws_key_pair.mykeypair.key_name}"
+  IMAGE_ID         = "${lookup(var.IMAGE_ID, var.LINUX_DISTRO)}"
+  WORKER_FLAVOR    = "t2.micro"
+  SUBNET_IDS       = ["${module.vpc.main-public-1}", "${module.vpc.main-public-2}", "${module.vpc.main-public-3}"]
+  SECURITY_GROUPS  = ["${module.vpc.external-secg}", "${module.vpc.internal-secg}"]
+  MIN_NUMBER_INST  = 2
+  MAX_NUMBER_INST  = 10
+  ALB_ARN          = "${module.alb.alb-target}"
+  WORKER_USER_DATA = "${data.template_file.worker.rendered}"
 }
 
 module "alb" {

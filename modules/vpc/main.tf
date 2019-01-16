@@ -14,7 +14,7 @@ resource "aws_vpc" "main" {
 # Subnets
 resource "aws_subnet" "main-public-1" {
   vpc_id                  = "${aws_vpc.main.id}"
-  cidr_block              = "${var.SUBNET_PUBLIC-1}"
+  cidr_block              = "${element(var.PUBLIC_SUBNET, 0)}"
   map_public_ip_on_launch = "true"
   availability_zone       = "${var.AWS_REGION}a"
 
@@ -25,7 +25,7 @@ resource "aws_subnet" "main-public-1" {
 
 resource "aws_subnet" "main-public-2" {
   vpc_id                  = "${aws_vpc.main.id}"
-  cidr_block              = "${var.SUBNET_PUBLIC-2}"
+  cidr_block              = "${element(var.PUBLIC_SUBNET, 1)}"
   map_public_ip_on_launch = "true"
   availability_zone       = "${var.AWS_REGION}b"
 
@@ -36,7 +36,7 @@ resource "aws_subnet" "main-public-2" {
 
 resource "aws_subnet" "main-public-3" {
   vpc_id                  = "${aws_vpc.main.id}"
-  cidr_block              = "${var.SUBNET_PUBLIC-3}"
+  cidr_block              = "${element(var.PUBLIC_SUBNET, 2)}"
   map_public_ip_on_launch = "true"
   availability_zone       = "${var.AWS_REGION}c"
 
@@ -47,7 +47,7 @@ resource "aws_subnet" "main-public-3" {
 
 resource "aws_subnet" "main-private-1" {
   vpc_id                  = "${aws_vpc.main.id}"
-  cidr_block              = "${var.SUBNET_PRIVATE-1}"
+  cidr_block              = "${element(var.PRIVATE_SUBNET, 0)}"
   map_public_ip_on_launch = "false"
   availability_zone       = "${var.AWS_REGION}a"
 
@@ -58,7 +58,7 @@ resource "aws_subnet" "main-private-1" {
 
 resource "aws_subnet" "main-private-2" {
   vpc_id                  = "${aws_vpc.main.id}"
-  cidr_block              = "${var.SUBNET_PRIVATE-2}"
+  cidr_block              = "${element(var.PRIVATE_SUBNET, 1)}"
   map_public_ip_on_launch = "false"
   availability_zone       = "${var.AWS_REGION}b"
 
@@ -69,7 +69,7 @@ resource "aws_subnet" "main-private-2" {
 
 resource "aws_subnet" "main-private-3" {
   vpc_id                  = "${aws_vpc.main.id}"
-  cidr_block              = "${var.SUBNET_PRIVATE-3}"
+  cidr_block              = "${element(var.PRIVATE_SUBNET, 2)}"
   map_public_ip_on_launch = "false"
   availability_zone       = "${var.AWS_REGION}c"
 
