@@ -26,9 +26,9 @@ module "ec2" {
   AWS_KEYPAIR               = "${aws_key_pair.mykeypair.key_name}"
   IMAGE_ID                  = "${lookup(var.IMAGE_ID, var.LINUX_DISTRO)}"
   MANAGER_FLAVOR            = "t2.micro"
-  MANAGER_AVAILABILITY_ZONE = "${module.vpc.main-public-1}"
-  STANDBY_AVAILABILITY_ZONE = "${module.vpc.main-public-2}"
-  SECURITY_GROUPS           = ["${module.vpc.external-secg}", "${module.vpc.internal-secg}"]
+  MANAGER_AVAILABILITY_ZONE = "${element(module.vpc.public_subnets, 0)}"
+  STANDBY_AVAILABILITY_ZONE = "${element(module.vpc.public_subnets, 1)}"
+  SECURITY_GROUPS           = "${module.vpc.security_groups}"
   STANDBY_COUNT             = 2
   MANAGER_USER_DATA         = "${data.template_file.master.rendered}"
   STANDBY_USER_DATA         = "${data.template_file.master_standby.rendered}"
@@ -41,10 +41,10 @@ module "asg" {
   AWS_KEYPAIR      = "${aws_key_pair.mykeypair.key_name}"
   IMAGE_ID         = "${lookup(var.IMAGE_ID, var.LINUX_DISTRO)}"
   WORKER_FLAVOR    = "t2.micro"
-  SUBNET_IDS       = ["${module.vpc.main-public-1}", "${module.vpc.main-public-2}", "${module.vpc.main-public-3}"]
-  SECURITY_GROUPS  = ["${module.vpc.external-secg}", "${module.vpc.internal-secg}"]
+  SUBNET_IDS       = "${module.vpc.public_subnets}"
+  SECURITY_GROUPS  = "${module.vpc.security_groups}"
   MIN_NUMBER_INST  = 2
-  MAX_NUMBER_INST  = 10
+  MAX_NUMBER_INST  = 5
   ALB_ARN          = "${module.alb.alb-target}"
   WORKER_USER_DATA = "${data.template_file.worker.rendered}"
 }
@@ -54,8 +54,8 @@ module "alb" {
 
   ALB_NAME        = "${var.CLUSTER_NAME}"
   INTERNAL        = "false"
-  SECURITY_GROUPS = ["${module.vpc.external-secg}", "${module.vpc.internal-secg}"]
-  SUBNET_IDS      = ["${module.vpc.main-public-1}", "${module.vpc.main-public-2}", "${module.vpc.main-public-3}"]
+  SECURITY_GROUPS = "${module.vpc.security_groups}"
+  SUBNET_IDS      = "${module.vpc.public_subnets}"
   VPC_ID          = "${module.vpc.vpc_id}"
 }
 
