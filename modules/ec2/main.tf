@@ -17,7 +17,7 @@ resource "aws_instance" "master" {
 # Define a number of manager and join it to swarm
 resource "aws_instance" "master-standby" {
   ami                    = "${var.IMAGE_ID}"
-  count                  = "${var.STANDBY_COUNT}"
+  count                  = "${var.ENABLED == "true" ? 2 : 0}"
   instance_type          = "${var.MANAGER_FLAVOR}"
   subnet_id              = "${var.STANDBY_AVAILABILITY_ZONE}"
   vpc_security_group_ids = ["${var.SECURITY_GROUPS}"]

@@ -29,7 +29,7 @@ module "ec2" {
   MANAGER_AVAILABILITY_ZONE = "${element(module.vpc.public_subnets, 0)}"
   STANDBY_AVAILABILITY_ZONE = "${element(module.vpc.public_subnets, 1)}"
   SECURITY_GROUPS           = "${module.vpc.security_groups}"
-  STANDBY_COUNT             = 2
+  ENABLED                   = "true"
   MANAGER_USER_DATA         = "${data.template_file.master.rendered}"
   STANDBY_USER_DATA         = "${data.template_file.master_standby.rendered}"
 }

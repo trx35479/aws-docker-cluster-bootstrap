@@ -4,7 +4,7 @@ variable "IMAGE_ID" {}
 
 variable "MANAGER_FLAVOR" {}
 
-variable "STANDBY_COUNT" {}
+variable "ENABLED" {}
 
 variable "SECURITY_GROUPS" {
   type = "list"
