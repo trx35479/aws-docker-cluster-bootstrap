@@ -2,9 +2,11 @@ variable "CLUSTER_NAME" {}
 
 variable "IMAGE_ID" {}
 
-variable "MANAGER_FLAVOR" {}
+variable "FLAVOR" {}
 
-variable "ENABLED" {}
+variable "MASTER" {
+  type = "list"
+}
 
 variable "SECURITY_GROUPS" {
   type = "list"
@@ -12,10 +14,6 @@ variable "SECURITY_GROUPS" {
 
 variable "AWS_KEYPAIR" {}
 
-variable "MANAGER_AVAILABILITY_ZONE" {}
+variable "AVAILABILITY_ZONE" {}
 
-variable "STANDBY_AVAILABILITY_ZONE" {}
-
-variable "MANAGER_USER_DATA" {}
-
-variable "STANDBY_USER_DATA" {}
+variable "USER_DATA" {}

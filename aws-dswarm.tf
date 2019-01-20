@@ -19,19 +19,30 @@ module "vpc" {
   PRIVATE_SUBNET = ["10.212.20.0/24", "10.212.40.0/24", "10.212.60.0/24"]
 }
 
-module "ec2" {
+module "master" {
   source = "modules/ec2"
 
-  CLUSTER_NAME              = "${var.CLUSTER_NAME}"
-  AWS_KEYPAIR               = "${aws_key_pair.mykeypair.key_name}"
-  IMAGE_ID                  = "${lookup(var.IMAGE_ID, var.LINUX_DISTRO)}"
-  MANAGER_FLAVOR            = "t2.micro"
-  MANAGER_AVAILABILITY_ZONE = "${element(module.vpc.public_subnets, 0)}"
-  STANDBY_AVAILABILITY_ZONE = "${element(module.vpc.public_subnets, 1)}"
-  SECURITY_GROUPS           = "${module.vpc.security_groups}"
-  ENABLED                   = "true"
-  MANAGER_USER_DATA         = "${data.template_file.master.rendered}"
-  STANDBY_USER_DATA         = "${data.template_file.master_standby.rendered}"
+  CLUSTER_NAME      = "${var.CLUSTER_NAME}"
+  AWS_KEYPAIR       = "${aws_key_pair.mykeypair.key_name}"
+  IMAGE_ID          = "${lookup(var.IMAGE_ID, var.LINUX_DISTRO)}"
+  FLAVOR            = "t2.micro"
+  AVAILABILITY_ZONE = "${element(module.vpc.public_subnets, 0)}"
+  SECURITY_GROUPS   = "${module.vpc.security_groups}"
+  MASTER            = ["true", 1]
+  USER_DATA         = "${data.template_file.master.rendered}"
+}
+
+module "standby" {
+  source = "modules/ec2"
+
+  CLUSTER_NAME      = "${var.CLUSTER_NAME}"
+  AWS_KEYPAIR       = "${aws_key_pair.mykeypair.key_name}"
+  IMAGE_ID          = "${lookup(var.IMAGE_ID, var.LINUX_DISTRO)}"
+  FLAVOR            = "t2.micro"
+  AVAILABILITY_ZONE = "${element(module.vpc.public_subnets, 1)}"
+  SECURITY_GROUPS   = "${module.vpc.security_groups}"
+  MASTER            = ["false", 2]
+  USER_DATA         = "${data.template_file.master_standby.rendered}"
 }
 
 module "asg" {
