@@ -12,8 +12,17 @@ pipeline {
       }
     }
     stage('TF Apply') {
-      steps {
-        sh 'terraform apply -input=false myplan'
+      parallel {
+        stage('TF Apply') {
+          steps {
+            sh 'terraform apply -input=false myplan'
+          }
+        }
+        stage('TF Destroy') {
+          steps {
+            sh 'terraform destroy -input=false'
+          }
+        }
       }
     }
   }
