@@ -18,7 +18,7 @@ pipeline {
     }
     stage('TF Destroy') {
       steps {
-        sh 'terraform destroy -input=false'
+        sh 'terraform destroy -auto-approve'
       }
     }
   }
