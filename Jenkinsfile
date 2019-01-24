@@ -8,7 +8,7 @@ pipeline {
     }
     stage('TF Plan') {
       steps {
-        sh 'terraform plan --out myplan'
+        sh 'terraform plan -out myplan'
       }
     }
     stage('TF Apply') {
