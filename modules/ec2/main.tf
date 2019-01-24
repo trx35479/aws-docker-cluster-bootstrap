@@ -11,7 +11,7 @@ resource "aws_instance" "master-instance" {
   user_data              = "${var.USER_DATA}"
 
   tags {
-    Name     = "${var.CLUSTER_NAME}-Instance"
+    Name     = "${var.CLUSTER_NAME}-Instance-${count.index +1}"
     Owner    = "Rowel Uchi"
     Schedule = "10x5"
   }

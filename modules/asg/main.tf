@@ -23,7 +23,7 @@ resource "aws_autoscaling_group" "cluster-asg" {
 
   tag {
     key                 = "Name"
-    value               = "${var.CLUSTER_NAME}-asg-instances"
+    value               = "${var.CLUSTER_NAME}-asg-instances-${count.index +1}"
     propagate_at_launch = true
   }
 

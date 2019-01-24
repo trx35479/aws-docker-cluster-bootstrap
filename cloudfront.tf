@@ -52,7 +52,7 @@ resource "aws_cloudfront_distribution" "cf" {
     cloudfront_default_certificate = true
   }
 
-  depends_on = ["module.alb", "module.vpc", "module.asg", "module.master"]
+  depends_on = ["module.alb", "module.vpc", "module.asg", "module.master", "module.standby"]
 }
 
 output "cloudfront_dns_name" {
