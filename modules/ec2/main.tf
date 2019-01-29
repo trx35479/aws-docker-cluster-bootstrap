@@ -5,7 +5,7 @@ resource "aws_instance" "master-instance" {
   ami                    = "${var.IMAGE_ID}"
   count                  = "${var.MASTER[0] == "true" ? var.MASTER[1] : var.MASTER[1]}"
   instance_type          = "${var.FLAVOR}"
-  subnet_id              = "${var.AVAILABILITY_ZONE}"
+  subnet_id              = "${element(var.AVAILABILITY_ZONE, count.index)}"
   vpc_security_group_ids = ["${var.SECURITY_GROUPS}"]
   key_name               = "${var.AWS_KEYPAIR}"
   user_data              = "${var.USER_DATA}"

@@ -26,7 +26,7 @@ module "master" {
   AWS_KEYPAIR       = "${aws_key_pair.mykeypair.key_name}"
   IMAGE_ID          = "${lookup(var.IMAGE_ID, var.LINUX_DISTRO)}"
   FLAVOR            = "t2.micro"
-  AVAILABILITY_ZONE = "${element(module.vpc.public_subnets, 0)}"
+  AVAILABILITY_ZONE = "${module.vpc.public_subnets}"
   SECURITY_GROUPS   = "${module.vpc.security_groups}"
   MASTER            = ["true", 1]
   USER_DATA         = "${data.template_file.master.rendered}"
@@ -39,7 +39,7 @@ module "standby" {
   AWS_KEYPAIR       = "${aws_key_pair.mykeypair.key_name}"
   IMAGE_ID          = "${lookup(var.IMAGE_ID, var.LINUX_DISTRO)}"
   FLAVOR            = "t2.micro"
-  AVAILABILITY_ZONE = "${element(module.vpc.public_subnets, 1)}"
+  AVAILABILITY_ZONE = "${module.vpc.public_subnets}"
   SECURITY_GROUPS   = "${module.vpc.security_groups}"
   MASTER            = ["false", 2]
   USER_DATA         = "${data.template_file.master_standby.rendered}"
@@ -70,6 +70,10 @@ module "alb" {
   VPC_ID          = "${module.vpc.vpc_id}"
 }
 
-output "alb-target" {
+output "alb_target" {
   value = "${module.alb.alb-target}"
+}
+
+output "master_ip" {
+  value = "${module.master.master_ip}"
 }
