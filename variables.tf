@@ -3,7 +3,7 @@ variable "AWS_REGION" {
 }
 
 variable "CLUSTER_NAME" {
-  default = "dswarm"
+  default = "dev-dswarm"
 }
 
 variable "PATH_TO_PUBLIC_KEY" {
