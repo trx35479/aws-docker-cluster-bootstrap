@@ -1,2 +1,6 @@
 .terraform
 mykey*
+backups/*
+backups*
+inventory*
+

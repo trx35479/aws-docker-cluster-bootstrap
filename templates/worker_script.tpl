@@ -14,7 +14,10 @@ sudo systemctl start docker
 
 
 # initialize docker
+echo "${private_key}" > /home/ubuntu/mykey.pem
 
-sudo docker swarm init
-sudo docker swarm join-token --quiet worker > /home/ubuntu/worker-token
-sudo docker swarm join-token --quiet manager > /home/ubuntu/manager-token
+sudo chmod 0400 /home/ubuntu/mykey.pem
+sudo scp -o StrictHostKeyChecking=no -o NoHostAuthenticationForLocalhost=yes -o UserKnownHostsFile=/dev/null -i /home/ubuntu/mykey.pem \
+           ubuntu@${master_ip}:/home/ubuntu/worker-token .
+sudo docker swarm join --token $(cat /worker-token) ${master_ip}:2377
+sudo rm -f /home/ubuntu/mykey.pem

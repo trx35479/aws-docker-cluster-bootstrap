@@ -15,8 +15,17 @@ sudo systemctl start docker
 
 # initialize docker
 
-sudo chmod 0400 /home/ubuntu/mykey.pem
-sudo scp -o StrictHostKeyChecking=no -o NoHostAuthenticationForLocalhost=yes -o UserKnownHostsFile=/dev/null -i /home/ubuntu/mykey.pem \
-           ubuntu@${master_ip}:/home/ubuntu/worker-token .
-sudo docker swarm join --token $(cat /worker-token) ${master_ip}:2377
-sudo rm -f /home/ubuntu/mykey.pem
+sudo docker swarm init
+sudo docker swarm join-token --quiet worker > /home/ubuntu/worker-token
+sudo docker swarm join-token --quiet manager > /home/ubuntu/manager-token
+sleep 30
+
+# install prometheus/grafana
+git clone https://github.com/stefanprodan/swarmprom
+cd /swarmprom
+export ADMIN_USER=admin 
+export ADMIN_PASSWORD=admin 
+export SLACK_URL=https://hooks.slack.com/services/TOKEN 
+export SLACK_CHANNEL=devops-alerts 
+export SLACK_USER=alertmanager 
+docker stack deploy -c docker-compose.yml mon
