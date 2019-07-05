@@ -3,4 +3,5 @@ mykey*
 backups/*
 backups*
 inventory*
-
+*tfstate*
+*.bak

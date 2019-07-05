@@ -16,8 +16,10 @@ variable "SECURITY_GROUPS" {
 
 variable "WORKER_USER_DATA" {}
 
-variable "MIN_NUMBER_OF_INST" {}
+variable "MIN_NUMBER_INST" {}
 
-variable "MAX_NUMBER_OF_INST" {}
+variable "MAX_NUMBER_INST" {}
 
-variable "LOAD_BALANCERS" {}
+#variable "LOAD_BALANCERS" {}
+
+variable "ALB_ARN" {}
