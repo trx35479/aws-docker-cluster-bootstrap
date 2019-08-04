@@ -10,3 +10,5 @@ variable "SUBNET_IDS" {
 }
 
 variable "VPC_ID" {}
+
+variable "CERT" {}

@@ -5,3 +5,7 @@ output "alb-target" {
 output "alb-dns" {
   value = "${aws_alb.alb.dns_name}"
 }
+
+output "listener_arn" {
+  value = "${aws_lb_listener.alb-listener.arn}"
+}

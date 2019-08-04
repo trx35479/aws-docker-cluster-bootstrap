@@ -14,6 +14,8 @@ variable "SECURITY_GROUPS" {
 
 variable "AWS_KEYPAIR" {}
 
-variable "AVAILABILITY_ZONE" {}
+variable "AVAILABILITY_ZONE" {
+  type = "list"
+}
 
 variable "USER_DATA" {}

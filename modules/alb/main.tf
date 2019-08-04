@@ -30,8 +30,10 @@ resource "aws_lb_target_group" "alb-target" {
 
 resource "aws_lb_listener" "alb-listener" {
   load_balancer_arn = "${aws_alb.alb.arn}"
-  port              = "3000"
-  protocol          = "HTTP"
+  port              = "443"
+  protocol          = "HTTPS"
+  ssl_policy        = "ELBSecurityPolicy-2016-08"
+  certificate_arn   = "${var.CERTw}"
 
   default_action {
     type             = "forward"
